@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'switch.css' %}">
+    <title>Twilio Video Room</title>
+</head>
+<body>
+    <h1>Twilio Video Room</h1>
+    person_token = {{ context.person_token }}
+    <button id="disc_btn" onclick="refresh()" >Refresh</button>
+
+    <!-- Toggle local video -->
+    <label class="switch">
+        <input type="checkbox" onclick="toggleLocalVideo()" value="1" id="local_video">
+        <span class="slider round"></span>
+    </label>
+
+    room_token = {{ context.room_token }}
+
+    room_name = {{ context.room_name }}
+
+    person_name = {{ context.person_name }}
+
+    <div id="local-media"></div>
+    <div id="remote-media-div">remote-media-div</div>
+       
+
+    <script type="text/javascript">
+        context = {{ context|safe }};
+        // widget.init(context);
+    </script>
+    <script src="//media.twiliocdn.com/sdk/js/video/releases/2.0.0/twilio-video.min.js"></script>
+    <script type="text/javascript" src="{% static 'room_script.js' %}" ></script>    
+</body>
+</html>
