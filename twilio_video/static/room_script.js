@@ -1,98 +1,53 @@
-console.log('conectes')
-
-const Video = Twilio.Video;
-
-function connectRemote(room){
-  room.participants.forEach(participant=>{
-    participant.tracks.forEach(publication => {
-      if (publication.isSubscribed) {
-        const track = publication.track;
-        document.getElementById('remote-media-div').appendChild(track.attach());
-      }
-    });
-  });
-};
-
-
-
-
-
-
+const Video = Twilio.Video
 Video.connect(context.person_token, {
   name: context.room_name,
   audio: false,
-  video: {name:'Cyamera' , width: 640 }
+  video: { name:'Cyamera' , width: 640 }
 }).then(room => {
-  room.participants.forEach(participant=>{
-    alert(participant)
-    alert(`participants tarck:${participant.tracks}`)
-    participant.tracks.forEach(publication => {
-      
-      alert(publication)
-      
-      alert(publication.sid)
-      alert(publication.id)
+  console.log('Connected to Room "%s"', room.name);
 
-      alert(publication.isSubcribed)
-      if (publication.isSubcribed){
-        alert('I subbed it baby ;)')
-      }
-      const track = publication.track;
-      alert(`Track subbed ${track.id}`)
-      if (publication.isSubscribed) {
-        const track = publication.track;
-        alert(`Track subbed ${track.id}`)
-      }
-    });
-    
-  });
-  alert(`Successfully joined a Room: ${room}`);
-  room.on('participantConnected', participant => {
-    alert(`A remote Participant connected: ${participant}`);
-    alert('scripty')
-    alert(`Participant "${participant.identity}" connected`);
-  
-    
-    participant.tracks.forEach(publication => {
-      if (publication.isSubscribed) {
-        const track = publication.track;
-        alert('on track')
-        alert(`On track${track}`)
-        document.getElementById('remote-media-div').appendChild(track.attach());
-      }
-    });
-    
-  
-    participant.on('trackSubscribed', track => {
-      alert('on 2track')
-      alert(`On 2track${track}`)
-      document.getElementById('remote-media-div').appendChild(track.attach());
-    });
-  
-    
-  
-  });
- 
-  
-  
+  room.participants.forEach(participantConnected);
+  room.on('participantConnected', participantConnected);
 
-}, error => {
-  alert(`Unable to connect to Room: ${error.message}`);
+  room.on('participantDisconnected', participantDisconnected);
+  room.once('disconnected', error => room.participants.forEach(participantDisconnected));
 });
 
+function participantConnected(participant) {
+  console.log('Participant "%s" connected', participant.identity);
 
-function refresh(){
-  alert('Tracklist')
-  const trackList = context.trackList
-  alert(trackList)
+  const div = document.createElement('div');
+  div.id = participant.sid;
+  div.class = 'remote_video'
+  div.innerText = participant.identity;
+  
+  participant.on('trackSubscribed', track => trackSubscribed(div, track));
+  participant.on('trackUnsubscribed', trackUnsubscribed);
 
-  trackList.forEach(track=>{
-    alert(`Hey${track}`)
-    document.getElementById('remote-media-div').appendChild(track.attach());
-    alert('attached')
+  participant.tracks.forEach(publication => {
+    if (publication.isSubscribed) {
+      trackSubscribed(div, publication.track);
+    }
   });
+
+  document.body.appendChild(div);
+  my_div = document.getElementById(participant.sid);
+  my_div.style.height = '20px';
+  my_div.style.border = '1rem solid red';
 }
 
+function participantDisconnected(participant) {
+  console.log('Participant "%s" disconnected', participant.identity);
+  document.getElementById(participant.sid).remove();
+}
+
+function trackSubscribed(div, track) {
+  div.appendChild(track.attach());
+}
+
+function trackUnsubscribed(track) {
+  track.detach().forEach(element => element.remove());
+}
 
 function toggleLocalVideo(){
   const local_video = document.getElementById('local_video');
@@ -106,6 +61,4 @@ function toggleLocalVideo(){
       localMediaContainer.removeChild(localMediaContainer.firstChild);
     }
   }
-}
-
-
+};

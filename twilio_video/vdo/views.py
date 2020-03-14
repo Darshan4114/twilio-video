@@ -8,9 +8,9 @@ from twilio.jwt.access_token.grants import VideoGrant
 from .models import Person, Room
 from .forms import PersonForm, RoomForm
 
-account_sid = 'AC21a3828b958d55216cd592cd9222e2a2'
-api_key = 'SK2cbd5cc72dc326f96af2f44bfe5b0de7'
-api_secret = 'nhfG7PdXBtKSsNP3BGfyBA9MDGTnnxbV'
+account_sid = 'AC6e12a4b5aa86433ede29a13170c275cb'
+api_key = 'SK3e544ec7ec8c0723a6342f6865858965'
+api_secret = 'SdS1chrHN42QU29rPPUlwalVJgV5LYo9'
 client = Client(api_key, api_secret)
 # Create your views here.
 
@@ -19,7 +19,7 @@ client = Client(api_key, api_secret)
 #Creating Token helper function
 def token(person_name, room_name):
     person_name = str(person_name)
-    room_name = str(room_name)  
+    room_name = str(room_name)
 
     # required for Video grant
     identity = person_name
@@ -37,30 +37,35 @@ def token(person_name, room_name):
     
     return jwt_token
 
-def getRoomTracks(room):
-    participants = client.video.rooms(room).participants
-    track_list=[]
+# def getRoomTracks(room):
+#     participants = client.video.rooms(room).participants
+#     track_list=[]
 
-    for participant in participants.list(status='connected'):
-        publishedtrack = client.video.rooms(room)\
-            .participants.get(participant.fetch().sid)\
-            .published_tracks.get('Cyamera')\
-            .fetch()
+#     for participant in participants.list(status='connected'):
+#         publishedtrack = client.video.rooms(room)\
+#             .participants.get(participant.fetch().sid)\
+#             .published_tracks.get('Cyamera')\
+#             .fetch()
         
-        my_track = publishedtrack.sid
-        my_track = '[RemoteVideoTrack #2: '+my_track+']'
-        track_list.append(my_track)
-    return(track_list)
-    
-    
+#         my_track = publishedtrack.sid
+#         my_track = '[RemoteVideoTrack #2: '+my_track+']'
+#         track_list.append(my_track)
+#     return(track_list)
 
+def get_participants(room_name):
+    participants = client.video.rooms(room_name).participants
+    participants_list=[]
+    for participant in participants.list(status='connected'):
+        participant = participant.fetch().sid
+        participants_list.append(participant)
+    return(participants_list)
 
 def create(request):
     # Download the helper library from https://www.twilio.com/docs/python/install
     # Your Account Sid and Auth Token from twilio.com/console
     # DANGER! This is insecure. See http://twil.io/secure
-    account_sid = 'AC21a3828b958d55216cd592cd9222e2a2'
-    auth_token = '3f2f917fcc308d2a1b4b66fe154e3177'
+    account_sid = 'AC6e12a4b5aa86433ede29a13170c275cb'
+    auth_token = 'f4e2026cad0ec2bf7d9f824e313d6d0c'
     client = Client(account_sid, auth_token)
     if request.method == "POST":
         print('req.post : ', request.POST)
@@ -141,17 +146,17 @@ def create(request):
                     #person_token is generated new everytime
 
                 
-                # ...................................GETTING_ROOM_TRACK..........................
+                # ...................................GETTING_PARTICIPANTS_LIST..........................
                 
                 
-                trackList = getRoomTracks(room_name)
+                # trackList = getRoomTracks(room_name)
+
+                participantsList = get_participants(room_name)
                 
 
                 print("PERSON_TOKEN : ", person_token, ":end:")
 
                 print("ROOM_TOKEN : ", room_token, ":end:")
-        
-                print("TrackList : ",trackList)
 
                 context = {
                     "context":{
@@ -159,7 +164,7 @@ def create(request):
                         'person_token': person_token,
                         'room_name': room_name,
                         'room_token': room_token,
-                        'trackList' : trackList,
+                        'participantsList' : participantsList,
                     }                
                 }
                 #Get in the room             

@@ -1,0 +1,16 @@
+div#local-media video{
+    border: 1rem solid green;
+    display: cover;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+div.remote_video video{
+    border: 1rem solid black;
+    height: 10%;
+    position: relative;
+    right:0;
+    bottom:0;
+    z-index: 999;
+}

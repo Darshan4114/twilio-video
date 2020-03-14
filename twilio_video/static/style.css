@@ -3,12 +3,3 @@ body{
     background-color: aliceblue;
 }
 
-#local-media{
-    height: 15rem;
-    
-}
-#remote-media-div{
-    height: 100rem;
-    position: absolute;
-    right:0;
-}
