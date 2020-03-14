@@ -1,9 +1,9 @@
 const Video = Twilio.Video
 Video.connect(context.person_token, {
   name: context.room_name,
-  audio: false,
+  audio: {name: 'mic'},
   enableDominantSpeaker: true,
-  video: { name:'Cyamera' , width: 640 }
+  video: { name: 'camera' , width: 640 }
 }).then(room => {
   console.log('Connected to Room "%s"', room.name);
 
@@ -17,8 +17,7 @@ Video.connect(context.person_token, {
 function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
 
-  const div = document.getElementById('remote-div'); 
-  div.innerText = participant.identity;
+  const div = document.getElementById('remote-div');
   
   participant.on('trackSubscribed', track => trackSubscribed(div, track));
   participant.on('trackUnsubscribed', trackUnsubscribed);
@@ -29,7 +28,6 @@ function participantConnected(participant) {
     }
   });
 
-  document.body.appendChild(div);
 }
 
 function participantDisconnected(participant) {

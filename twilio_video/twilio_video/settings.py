@@ -25,7 +25,7 @@ SECRET_KEY = '(f(xkfxgvr=7e=hl8k0n^@qce^-4p@5d-f$i6i8-rxad5-)im0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['twilio-video-env.eba-tmm6xw7b.us-west-2.elasticbeanstalk.com', 'darshandev.com', 'https://www.darshandev.com', 'http://www.darshandev.com']
 
 
 # Application definition

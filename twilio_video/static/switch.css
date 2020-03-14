@@ -1,9 +1,13 @@
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+  display: block;
+  width:30px;
+  position: fixed;
+  margin-top:0.5rem;
+  width: 60px;
+  height: 34px;
+  z-index: 999;
+
   }
   
   /* Hide default HTML checkbox */
@@ -11,6 +15,7 @@
     opacity: 0;
     width: 0;
     height: 0;
+    
   }
   
   /* The slider */

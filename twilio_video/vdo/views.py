@@ -183,3 +183,5 @@ def create(request):
 
     return render(request, "create_room.html", context)
 
+def room(request):
+    return render(request, "in_room.html")

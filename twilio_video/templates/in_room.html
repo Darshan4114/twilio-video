@@ -5,28 +5,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'switch.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'room.css' %}">
     <title>Twilio Video Room</title>
 </head>
 <body>
-    
-    <h1>Twilio Video Room</h1>
-    
-    <!-- Toggle local video -->
-    <label class="switch" value="Connect">
-        <input type="checkbox" onclick="toggleLocalVideo()" value="1" id="local_video">
-        <span class="slider round"></span>
-    </label>
 
-    <p>Name: {{context.person_name}}</p>
-    <p>Participants : {{context.participantsList}}</p>
-    <p>Room: {{context.room_name}}</p>
+    <div class="container-fluid master">
 
-    <div id="media">
+        <!-- Toggle local video -->
+        
+
+        <!-- <p>Name: {{context.person_name}}</p>
+        <p>Participants : {{context.participantsList}}</p>
+        <p>Room: {{context.room_name}}</p> -->
+
+
         <div id="remote-div"></div>
-        <div id="local-media"></div>
+        <div class="waiting">
+            <h1 class="waiting" > Room Empty....       Please wait...</h1>
+        </div>
+               
+        
+        
+        <div class="local-group">
+
+            
+            <label id="switch" class="switch" value="Connect">
+                <input type="checkbox" onclick="toggleLocalVideo()" value="1" id="local_video">
+                <span class="slider round"></span>
+            </label>
+            <h4 class="switch-label">Local Video : </h4>
+
+            <div id="local-media"></div>
+        </div>
+        
+        
     </div>
          
 

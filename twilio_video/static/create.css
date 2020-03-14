@@ -1,0 +1,21 @@
+body{
+    background-color: aliceblue;
+    color: #555;
+}
+
+.container-fluid{
+    position: absolute;
+    top:3rem;
+    bottom:3rem;
+ }
+
+
+input{
+    width:100%;
+    margin-bottom: 1.5rem;
+}
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1.65rem;
+
+}
