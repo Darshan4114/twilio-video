@@ -2,6 +2,7 @@ const Video = Twilio.Video
 Video.connect(context.person_token, {
   name: context.room_name,
   audio: false,
+  enableDominantSpeaker: true,
   video: { name:'Cyamera' , width: 640 }
 }).then(room => {
   console.log('Connected to Room "%s"', room.name);
@@ -16,9 +17,7 @@ Video.connect(context.person_token, {
 function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
 
-  const div = document.createElement('div');
-  div.id = participant.sid;
-  div.class = 'remote_video'
+  const div = document.getElementById('remote-div'); 
   div.innerText = participant.identity;
   
   participant.on('trackSubscribed', track => trackSubscribed(div, track));
@@ -31,9 +30,6 @@ function participantConnected(participant) {
   });
 
   document.body.appendChild(div);
-  my_div = document.getElementById(participant.sid);
-  my_div.style.height = '20px';
-  my_div.style.border = '1rem solid red';
 }
 
 function participantDisconnected(participant) {
@@ -55,6 +51,7 @@ function toggleLocalVideo(){
   if (local_video.checked == true){
     Video.createLocalVideoTrack().then(track => {
       localMediaContainer.appendChild(track.attach());
+      
     });
   } else {    
     while(localMediaContainer.hasChildNodes){
