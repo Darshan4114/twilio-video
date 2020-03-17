@@ -18,7 +18,13 @@ function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
 
   const div = document.getElementById('remote-div');
-  
+  const para = document.createElement('p');
+  para.innerText = `${participant.identity} has connected! `
+  para.style.color = 'green';
+  para.style.fontSize = '1rem';
+  para.style.marginLeft = '2rem';
+  para.style.marginTop = '2rem';
+
   participant.on('trackSubscribed', track => trackSubscribed(div, track));
   participant.on('trackUnsubscribed', trackUnsubscribed);
 
@@ -27,6 +33,8 @@ function participantConnected(participant) {
       trackSubscribed(div, publication.track);
     }
   });
+
+  document.body.appendChild(para);
 
 }
 
@@ -37,10 +45,12 @@ function participantDisconnected(participant) {
 
 function trackSubscribed(div, track) {
   div.appendChild(track.attach());
+  alert('Track Subscribed');
 }
 
 function trackUnsubscribed(track) {
   track.detach().forEach(element => element.remove());
+  alert('Track Unsubscribed')
 }
 
 function toggleLocalVideo(){
