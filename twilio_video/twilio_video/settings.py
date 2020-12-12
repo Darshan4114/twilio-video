@@ -25,7 +25,7 @@ SECRET_KEY = '(f(xkfxgvr=7e=hl8k0n^@qce^-4p@5d-f$i6i8-rxad5-)im0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '192.168.1.102', '0.0.0.0', 'darshandev.com', 'https://www.darshandev.com', 'http://www.darshandev.com']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.3', '0.0.0.0', 'darshandev.com', 'https://www.darshandev.com', 'http://www.darshandev.com']
 
 
 # Application definition
@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vdo',
-    'sslserver',    
+    'video_app',
+    'sslserver',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'twilio_video.urls'
@@ -123,4 +125,9 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+
 ]

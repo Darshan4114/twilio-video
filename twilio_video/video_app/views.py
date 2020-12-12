@@ -9,9 +9,10 @@ from .models import Person, Room
 from .forms import PersonForm, RoomForm
 
 account_sid = 'AC6e12a4b5aa86433ede29a13170c275cb'
-api_key = 'SK3e544ec7ec8c0723a6342f6865858965'
-api_secret = 'SdS1chrHN42QU29rPPUlwalVJgV5LYo9'
-client = Client(api_key, api_secret)
+
+api_key_sid = "SK62ced009b53d4a9f29633a7aa68f36f6"
+api_key_secret = "AB4G86EbZu0q61YeeIQzuz0XBrtRDA1P"
+client = Client(api_key_sid, api_key_secret)
 # Create your views here.
 
 #Create Room
@@ -25,7 +26,7 @@ def token(person_name, room_name):
     identity = person_name
 
     # Create Access Token with credentials
-    token = AccessToken(account_sid, api_key, api_secret, identity=identity)
+    token = AccessToken(account_sid, api_key_sid, api_key_secret, identity=identity)
 
     # Create a Video grant and add to token
     video_grant = VideoGrant(room= room_name)
@@ -64,9 +65,11 @@ def create(request):
     # Download the helper library from https://www.twilio.com/docs/python/install
     # Your Account Sid and Auth Token from twilio.com/console
     # DANGER! This is insecure. See http://twil.io/secure
-    account_sid = 'AC6e12a4b5aa86433ede29a13170c275cb'
-    auth_token = 'f4e2026cad0ec2bf7d9f824e313d6d0c'
-    client = Client(account_sid, auth_token)
+    api_key_sid = "SK62ced009b53d4a9f29633a7aa68f36f6"
+    api_key_secret = "AB4G86EbZu0q61YeeIQzuz0XBrtRDA1P"
+    client = Client(api_key_sid, api_key_secret)
+
+
     if request.method == "POST":
         print('req.post : ', request.POST)
         room_form = RoomForm(request.POST)
@@ -83,6 +86,11 @@ def create(request):
                 person_name = person_form.cleaned_data['person_name']
                 person_gender = person_form.cleaned_data['gender']
                 person_role = person_form.cleaned_data['role']
+
+                participants = client.video.rooms(room_name).participants
+
+                for participant in participants.list(status='connected'):
+                    print("participant:", participant.fetch().identity)
                 
                         # ....................................ROOM_LOGIC................................
 

@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="{% static 'switch.css' %}">
     <link rel="stylesheet" href="{% static 'room.css' %}">
     <title>Twilio Video Room</title>
+
 </head>
 <body>
 
-    <div class="container-fluid master">
+    <div class="container-fluid master" id="container">
 
         <!-- Toggle local video -->
         
@@ -25,6 +26,7 @@
         <div id="remote-div"></div>
         <div class="waiting">
             <h1 class="waiting" > Room Empty....       Please wait...</h1>
+            <p>{{context.participantsList}}</p>
         </div>
                
         
@@ -38,7 +40,7 @@
             </label>
             <h4 class="switch-label">Local Video : </h4>
 
-            <div id="local-media"></div>
+            <div id="local_media"></div>
         </div>
         
         
