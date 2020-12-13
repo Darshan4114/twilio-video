@@ -20,12 +20,12 @@ div#local_media video {
   z-index: 5;
 }
 
-#remote-div video {
+.remote_div video {
   height: 100%;
   z-index: 0;
 }
 
-#remote-div {
+.remote_div {
   overflow: hidden;
   padding: 0;
   margin: 0;
