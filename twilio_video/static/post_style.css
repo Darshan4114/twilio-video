@@ -43,6 +43,12 @@ div#local_media video {
   bottom: 0.5rem;
   right: 30%;
 }
+#disconnect {
+  z-index: 5;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 40%;
+}
 .switch-label {
   z-index: 5;
   position: absolute;
