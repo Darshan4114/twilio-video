@@ -17,6 +17,17 @@ const joinRoom = async() =>{
   room.on('participantConnected', participantConnected);
 
   room.on('participantDisconnected', participantDisconnected);
+  room.on('disconnected', function(room, error) {
+    if (error) {
+      console.log('Unexpectedly disconnected:  room.on(disconnected, fun', error);
+    }
+    room.localParticipant.tracks.forEach(function(track) {
+      console.log('Unexpectedly disconnected:  room.on(disconnected, fun')
+      track.stop();
+      track.detach();
+    });
+  });
+  
   room.once('disconnected', error => room.participants.forEach(participantDisconnected));
   return [room,tracks];
 }
@@ -74,13 +85,16 @@ const toggleLocalVideo = async(room) =>{
 }
 
 const disconnect = async() => {
-  get_room_and_tracks.then((roomAndTracks)=>{
-    let room = roomAndTracks[0]
-    // console.log(room)
-    room.disconnect()
-  }
-  
-  )
+  get_room_and_tracks.then(
+    (roomAndTracks)=>{
+      const room = roomAndTracks[0]
+      const tracks = roomAndTracks[1]
+      
+      tracks.forEach(track => track.stop())
+      room.localParticipant.unpublishTracks(tracks);
+      tracks.forEach(track => track.detach())
+      room.disconnect()
+    })
 }
 // toggleLocalVideo()
 // .then((res)=> console.log(res.localParticipant.tracks))
@@ -147,13 +161,17 @@ function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
 
   const div = document.getElementsByClassName('remote_div')[0]
+  window.existing_remote_div = div
+
   if (!div){
     div =  document.createElement('div');
     div.setAttribute('class', 'remote_div')
     div.setAttribute('id',participant.sid)
     const container = document.querySelector('#container');
     container.appendChild(div)
-  }  
+    window.created_remote_div = div
+  }
+  div.setAttribute('id',participant.sid)
 
   const para = document.createElement('p');
   para.innerText = `${participant.identity} has connected! `
@@ -183,13 +201,20 @@ function participantConnected(participant) {
 }
 
 function participantDisconnected(participant) {
-  console.log('Participant "%s" disconnected', participant.identity);
-  document.getElementById(participant.sid).remove();
+  alert('Participant "%s" disconnected', participant.identity);
+  let disconnected_participant_element = document.getElementById(participant.sid)
+  console.log('disconeccted participant',disconnected_participant_element)
+  // disconnected_participant_element.remove();
+  participant.tracks.forEach(function(track) {
+    track.detach().forEach(function(mediaElement) {
+      mediaElement.remove();
+    });
+});
 }
 
 function trackSubscribed(div, track) {
   div.appendChild(track.attach());
-  alert('Track Subscribed');
+  alert('Track Subscribed');  
 }
 
 function trackUnsubscribed(track) {
