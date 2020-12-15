@@ -1,11 +1,13 @@
 from django.conf import settings
 from twilio.rest import Client
+from video_app.helper_functions.create_room_name import create_room_name
+from video_app.models import Room
 
 twilio_api_key_sid = settings.TWILIO_API_KEY_SID
 twilio_api_key_secret = settings.TWILIO_API_KEY_SECRET
 client = Client(twilio_api_key_sid, twilio_api_key_secret)
 
-def create_room(request):
+def create_room():
     room_name = create_room_name()
      # Creating twilio room
     twilio_room = client.video.rooms.create(unique_name=room_name)
