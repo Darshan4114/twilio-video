@@ -9,5 +9,5 @@ class RoomForm(ModelForm):
 class PersonForm(ModelForm):
     class Meta:
         model = Person
-        fields=['person_name', 'gender', 'role']
+        fields=['person_name']
 

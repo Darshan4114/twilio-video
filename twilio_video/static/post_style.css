@@ -64,3 +64,8 @@ div#local_media video {
   left: 2rem;
   color: #333;
 }
+
+.notifications {
+  margin: 2rem;
+  color: green;
+}

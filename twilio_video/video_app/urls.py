@@ -1,10 +1,8 @@
 from django.urls import path
-from .views import *
-app_name = 'vdo'
+from .views import CreateRoomView, RoomView
+app_name = 'video_app'
 
 urlpatterns=[
-    # path('', vdo_call, name = "video_calls"),
-    path('', create, name = "create"),
-    path('room/', room, name = "room"),
-
+    path('', CreateRoomView, name = "CreateRoomView"),
+    path('<room_name>/', RoomView, name = "RoomView"),
 ]

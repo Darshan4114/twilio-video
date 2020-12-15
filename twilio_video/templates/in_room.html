@@ -25,7 +25,7 @@
 
         <div class="remote_div"></div>
         <div class="waiting">
-            <h1 class="waiting" > Room Empty....       Please wait...</h1>
+            <h1 class="waiting" > Room Empty.... {{room_name}}      Please wait...</h1>
             <p>{{context.participantsList}}</p>
         </div>
                
@@ -33,8 +33,7 @@
         
         <div class="local-group">
 
-            <button id="disconnect" onclick="disconnect()">Disconnect</button>
-            
+            <a href="{% url 'video_app:CreateRoomView' %}" id="disconnect" onclick="disconnect()">Disconnect</a>            
             <label id="switch" class="switch" value="Connect">
                 <input type="checkbox" onclick="toggleLocalVideo()" value="1" id="local_video">
                 <span class="slider round"></span>

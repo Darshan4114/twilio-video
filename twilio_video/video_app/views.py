@@ -1,73 +1,23 @@
 from django.shortcuts import render
+from django.views.generic import View
 from django.http import HttpResponse
+from django.conf import settings
 import os
 import json
 from twilio.rest import Client
-from twilio.jwt.access_token import AccessToken
-from twilio.jwt.access_token.grants import VideoGrant
 from .models import Person, Room
 from .forms import PersonForm, RoomForm
 
-account_sid = 'AC6e12a4b5aa86433ede29a13170c275cb'
+from video_app.helper_functions.create_token import token
+from video_app.helper_functions.get_participants import get_participants
+from video_app.helper_functions.create_room_name import create_room_name
+from video_app.helper_functions.create_room import create_room
 
-api_key_sid = "SK62ced009b53d4a9f29633a7aa68f36f6"
-api_key_secret = "AB4G86EbZu0q61YeeIQzuz0XBrtRDA1P"
-client = Client(api_key_sid, api_key_secret)
-# Create your views here.
+twilio_api_key_sid = settings.TWILIO_API_KEY_SID
+twilio_api_key_secret = settings.TWILIO_API_KEY_SECRET
+client = Client(twilio_api_key_sid, twilio_api_key_secret)
 
-#Create Room
-
-#Creating Token helper function
-def token(person_name, room_name):
-    person_name = str(person_name)
-    room_name = str(room_name)
-
-    # required for Video grant
-    identity = person_name
-
-    # Create Access Token with credentials
-    token = AccessToken(account_sid, api_key_sid, api_key_secret, identity=identity)
-
-    # Create a Video grant and add to token
-    video_grant = VideoGrant(room= room_name)
-    token.add_grant(video_grant)
-
-    # Return token info as JSON and striping 'b' and quotes.
-    a_token = str(token.to_jwt())
-    jwt_token = a_token[2:-1]
-    
-    return jwt_token
-
-# def getRoomTracks(room):
-#     participants = client.video.rooms(room).participants
-#     track_list=[]
-
-#     for participant in participants.list(status='connected'):
-#         publishedtrack = client.video.rooms(room)\
-#             .participants.get(participant.fetch().sid)\
-#             .published_tracks.get('Cyamera')\
-#             .fetch()
-        
-#         my_track = publishedtrack.sid
-#         my_track = '[RemoteVideoTrack #2: '+my_track+']'
-#         track_list.append(my_track)
-#     return(track_list)
-
-def get_participants(room_name):
-    participants = client.video.rooms(room_name).participants
-    participants_list=[]
-    for participant in participants.list(status='connected'):
-        participant = participant.fetch().sid
-        participants_list.append(participant)
-    return(participants_list)
-
-def create(request):
-    # Download the helper library from https://www.twilio.com/docs/python/install
-    # Your Account Sid and Auth Token from twilio.com/console
-    # DANGER! This is insecure. See http://twil.io/secure
-    api_key_sid = "SK62ced009b53d4a9f29633a7aa68f36f6"
-    api_key_secret = "AB4G86EbZu0q61YeeIQzuz0XBrtRDA1P"
-    client = Client(api_key_sid, api_key_secret)
+def CreateRoomView(request):
 
 
     if request.method == "POST":
@@ -84,8 +34,6 @@ def create(request):
                 # Taking input from Forms
                 room_name = room_form.cleaned_data['room_name']
                 person_name = person_form.cleaned_data['person_name']
-                person_gender = person_form.cleaned_data['gender']
-                person_role = person_form.cleaned_data['role']
 
                 participants = client.video.rooms(room_name).participants
 
@@ -131,7 +79,6 @@ def create(request):
                 #Creating Person if not exists
                 if Person.objects.filter(person_name = person_name).exists():
                     person = Person.objects.get(person_name = person_name)
-
                     #Person exists
 
                     # Variables(name & token) from Django's DB
@@ -144,9 +91,7 @@ def create(request):
                     person = Person.objects.create(
                         person_name = person_name,
                         person_token = person_token,
-                        gender = person_gender,
-                        role = person_role,
-                    )
+                        )
                     person.save()
                     
                     #Setting variables(name & token) as per newly created room
@@ -189,7 +134,48 @@ def create(request):
                         'person_form' : PersonForm(),
                     }
 
+
     return render(request, "create_room.html", context)
 
-def room(request):
-    return render(request, "in_room.html")
+
+class RoomView(View):
+    def get(self, request):
+        room_name, room_sid = create_room()
+        request.session['room_name'] = room_name
+        request.session['room_sid'] = room_sid
+
+        person_form = PersonForm()
+        context={
+            "room_name":room_name,
+            "room_sid":room_sid,
+            "person_form":person_form,
+        }
+        return render(request, 'create_room.html', context)
+
+    def post(self, request):
+        room_name = request.session.get('room_name')
+        room_sid = request.session.get('room_sid')
+        participantsList = get_participants(room_name)
+        person_form = PersonForm(reqest.POST)
+        if person_form.is_valid():
+            person_name = person_form.cleaned_data['person_name']
+            person_token = str(token(person_name, room_name))
+            person = Person.objects.create(
+                person_name = person_name,
+                person_token = person_token,
+                )
+            person.save()
+        
+            context={
+                "context":{
+                        'person_name': person_name,
+                        'person_token': person_token,
+                        'room_name': room_name,
+                        'room_sid': room_sid,
+                        'participantsList' : participantsList,
+                    }
+            }
+
+            return render(request, 'in_room.html', context)
+        else:
+            return HttpResponse('person form error')
