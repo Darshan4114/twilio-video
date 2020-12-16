@@ -6,7 +6,7 @@ account_sid = 'AC9e157590d76a6ce9aff6350ba3b4bfd3'
 api_key_sid = "SK324fef26fbac3947eb905edbd31e50fa"
 api_key_secret = "AEsTZcKySZFnPuCgijsey7yb3zBNPzMp"
 
-def token(person_name, room_name):
+def create_token(person_name, room_name):
     person_name = str(person_name)
     room_name = str(room_name)
 

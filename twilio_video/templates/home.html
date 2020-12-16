@@ -1,0 +1,17 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <title>Create Room</title>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fda16cd3acb020012237deb&product=sticky-share-buttons" async="async"></script>
+</head>
+<body>
+    {{room_data}}
+    <button id="create_room_btn" onclick="create_room()">Create Room</button>
+    <script src="{% static 'js/create_room.js' %}"></script>
+</body>
+</html>

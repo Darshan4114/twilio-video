@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#create_room_btn {
+  color: #fff;
+  background-color: rgb(74, 185, 40);
+  padding: 1em;
+  border: 1px solid rgb(74, 185, 40);
+  border-radius: 0.2em;
+  transition: all 0.2s ease-in-out;
+}
+#create_room_btn:hover {
+  color: rgb(74, 185, 40);
+  background-color: #fff;
+  cursor: pointer;
+}

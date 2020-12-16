@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'create.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create.css' %}">
     <title>Twilio Video</title>
 </head>
 <body>
@@ -15,9 +15,17 @@
 
             <form action="" method="POST">
                 {% csrf_token %}
+                {{room_name}} , {{room_sid}}
                 {{person_form.as_p}}
                 <input type="submit" class="btn btn-success" id = submit>
             </form>
+            <section class="share">
+                <div class="email">
+                    <a href="mailto:?subject=Link to video call room from DarshanDev &body= Mail Body">
+                        Email
+                    </a>
+                </div>
+            </section>
         </div>        
     </div>
     
