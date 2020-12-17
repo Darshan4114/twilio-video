@@ -3,7 +3,8 @@ const create_room = async() =>{
     btn.remove()    
     let room_data = await fetch('/create_room')
     let room_data_json = await room_data.json();
-    
+    sessionStorage.setItem('room_name',room_data_json.room_name)
+    sessionStorage.setItem('room_sid',room_data_json.room_sid)
     let room_link = document.createElement('a')
     room_link.href = room_data_json.room_name
     room_link.textContent = "Join Room"

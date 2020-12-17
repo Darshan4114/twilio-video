@@ -23,8 +23,8 @@ const joinRoom = async() =>{
     }
     room.localParticipant.tracks.forEach(function(track) {
       console.log('Unexpectedly disconnected:  room.on(disconnected, fun')
-      track.stop();
-      track.detach();
+      track.track.stop();
+      track.track.detach();
     });
   });
   
@@ -34,9 +34,9 @@ const joinRoom = async() =>{
 
 get_room_and_tracks = joinRoom()
 
-const toggleLocalVideo = async(room) =>{
+const toggleLocalTrack = async(track_kind) =>{
   console.log('running toggle')
-  const local_video = document.getElementById('local_video');
+  const toggler = document.getElementById(`toggler_${track_kind}`);
   const container = document.querySelector('#container');
   const localMediaContainer = document.getElementById('local_media') || container.appendChild(document.createElement('div'));
   localMediaContainer.setAttribute('id', 'local_media')
@@ -49,19 +49,19 @@ const toggleLocalVideo = async(room) =>{
     window.room = room
     window.tracks = tracks
 
-    const localVideoTrack = tracks.find(track => track.kind === 'video') || Video.createLocalVideoTrack();
+    const localTrack = tracks.find(track => track.kind === track_kind)
 
-    if (local_video.checked === true){
-      localVideoTrack.enable()
-      room.localParticipant.publishTrack(localVideoTrack)
-      localMediaContainer.appendChild(localVideoTrack.attach())
+    if (toggler.checked === true){
+      localTrack.enable()
+      room.localParticipant.publishTrack(localTrack)
+      localMediaContainer.appendChild(localTrack.attach())
     }
-    else if (local_video.checked !== true){
-      localVideoTrack.disable()
-      let mediaElements = localVideoTrack.detach();
+    else if (toggler.checked !== true){
+      localTrack.disable()
+      let mediaElements = localTrack.detach();
       mediaElements.forEach(mediaElement => mediaElement.remove());
-      room.localParticipant.unpublishTrack(localVideoTrack)
-      localVideoTrack.detach(localMediaContainer).remove()
+      room.localParticipant.unpublishTrack(localTrack)
+      localTrack.detach(localMediaContainer).remove()
     }
   })
 }
@@ -81,6 +81,7 @@ const disconnect = async() => {
 
 function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
+  alert('Participant "%s" connected', participant.identity);
 
   const div = document.getElementsByClassName('remote_div')[0]
   window.existing_remote_div = div
@@ -110,13 +111,27 @@ function participantConnected(participant) {
   })
 }
 
-function participantDisconnected(participant) {
-  participant.tracks.forEach(function(track) {
-    track.detach().forEach(function(mediaElement) {
-      mediaElement.remove();
-    });
+const participantDisconnected = (participant) => {
+  participant.tracks.forEach(track =>{
+    if(track){
+      track.track.detach().forEach(function(mediaElement) {
+        mediaElement.remove();
+      });
+    }
 });
 }
 
 const trackSubscribed = (div, track) => div.appendChild(track.attach())
 const trackUnsubscribed =(track)=> track.detach().forEach(element => element.remove())
+
+
+const endRoom = async() =>{
+  roomAndTracks  = await get_room_and_tracks
+  let room = roomAndTracks[0]
+  room.participants.forEach(disconnect)
+  room_sid = room.sid
+  room = await fetch(`/end_room/${room_sid}`)
+  room_data = await room.json()
+  console.log('room_end, roomdata = ',room_data)
+  window.location.replace('/')
+}

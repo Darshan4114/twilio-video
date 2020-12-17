@@ -37,17 +37,29 @@ div#local_media video {
   left: 0;
 }
 
-#switch {
+#switch-video {
   z-index: 5;
   position: absolute;
   bottom: 0.5rem;
   right: 30%;
+}
+#switch-audio {
+  z-index: 5;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 40%;
 }
 #disconnect {
   z-index: 5;
   position: absolute;
   bottom: 0.5rem;
   right: 40%;
+}
+#end_room {
+  z-index: 5;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 50%;
 }
 .switch-label {
   z-index: 5;

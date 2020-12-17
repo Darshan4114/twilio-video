@@ -28,3 +28,8 @@ def create_room(request):
         "room_sid": room_sid
     }
     return JsonResponse(room_data)
+
+
+def end_room(request, room_sid):
+    room = client.video.rooms(room_sid).update(status='completed')
+    return JsonResponse({"room_status": 'gud'})
