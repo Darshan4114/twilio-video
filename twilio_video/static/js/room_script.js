@@ -1,6 +1,4 @@
 const Video = Twilio.Video
-// {createLocalTracks, connect} = Video;
-
 
 const joinRoom = async() =>{
   const tracks = await Video.createLocalTracks();
@@ -8,28 +6,38 @@ const joinRoom = async() =>{
   sessionStorage.setItem('tracks', tracks)
   const room = await Video.connect(context.person_token, {
     name: context.room_name,
-    // tracks
     audio:false,
     video:false
   });
   sessionStorage.setItem('room', room)
+  setTimer(endRoom, 120000)
   room.participants.forEach(participantConnected);
   room.on('participantConnected', participantConnected);
 
   room.on('participantDisconnected', participantDisconnected);
-  room.on('disconnected', function(room, error) {
-    if (error) {
-      console.log('Unexpectedly disconnected:  room.on(disconnected, fun', error);
-    }
-    room.localParticipant.tracks.forEach(function(track) {
-      console.log('Unexpectedly disconnected:  room.on(disconnected, fun')
-      track.track.stop();
-      track.track.detach();
-    });
-  });
-  
+  room.on('disconnected', disconnected);
+  sleep(endRoom,context.room_sid)  
   room.once('disconnected', error => room.participants.forEach(participantDisconnected));
   return [room,tracks];
+}
+
+const setTimer = async(fn, time) => {
+  let date = new Date()
+  timer = document.createElement('p')
+  timer.setAttribute('id','timer')
+  document.body.appendChild(timer)
+  let current_time = date.getTime()
+  time_passed = current_time - sessionStorage.getItem('room_start_time')
+  time_left = Math.floor((time-time_passed)/1000)
+  while (time_left > 0){
+    await sleep(1000)
+    time_left -= 1
+    let min = String(Math.floor(time_left/60)).padStart(2,'0')
+    let sec = String(Math.floor(time_left-Math.floor(min*60))).padStart(2,'0')
+    timer.textContent = `${min}:${sec}`
+    time_left==0 ? fn() : console.log('Room time left', time_left)
+}
+
 }
 
 get_room_and_tracks = joinRoom()
@@ -66,7 +74,7 @@ const toggleLocalTrack = async(track_kind) =>{
   })
 }
 
-const disconnect = async() => {
+const leaveRoom = async() => {
   get_room_and_tracks.then(
     (roomAndTracks)=>{
       const room = roomAndTracks[0]
@@ -77,6 +85,17 @@ const disconnect = async() => {
       tracks.forEach(track => track.detach())
       room.disconnect()
     })
+}
+
+const disconnected = (room, error)=>{
+  if (error) {
+    console.log('Unexpectedly disconnected:  room.on(disconnected, fun', error);
+  }
+  room.localParticipant.tracks.forEach(function(track) {
+    console.log('Unexpectedly disconnected:  room.on(disconnected, fun')
+    track.track.stop();
+    track.track.detach();
+  });
 }
 
 function participantConnected(participant) {
@@ -126,12 +145,14 @@ const trackUnsubscribed =(track)=> track.detach().forEach(element => element.rem
 
 
 const endRoom = async() =>{
-  roomAndTracks  = await get_room_and_tracks
+  let roomAndTracks = await get_room_and_tracks
   let room = roomAndTracks[0]
-  room.participants.forEach(disconnect)
   room_sid = room.sid
+  room.participants.forEach(disconnect)
   room = await fetch(`/end_room/${room_sid}`)
   room_data = await room.json()
   console.log('room_end, roomdata = ',room_data)
   window.location.replace('/')
 }
+
+const sleep = (delay)=> new Promise((resolve)=>setTimeout(resolve,delay))
