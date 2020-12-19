@@ -2,7 +2,7 @@ body {
   margin: 0;
   height: 100vh;
   font-weight: 100;
-  background: radial-gradient(#0077ff, #011329);
+  background: radial-gradient(#ba00f3, #525151);
   -webkit-overflow-y: hidden;
   -moz-overflow-y: hidden;
   -o-overflow-y: hidden;
@@ -257,7 +257,10 @@ button:focus {
   font-family: "Roboto", sans-serif;
   font-weight: 200;
   color: white;
-  font-size: 2em;
+  /* font-size: 2em; */
+  text-align: center;
+  margin: 0.5rem;
+  font-size: 1.2rem;
 }
 
 #head1,
@@ -266,6 +269,9 @@ button:focus {
 #head4,
 #head5 {
   opacity: 0;
+  text-align: center;
+  margin: 0.5rem;
+  font-size: 1.2rem;
 }
 
 #head0 {
@@ -285,22 +291,22 @@ button:focus {
   -moz-animation: fadeIn 1.7s ease-in;
   -o-animation: fadeIn 1.7s ease-in;
   animation: fadeIn 1.7s ease-in;
-  -webkit-animation-delay: 2.5s;
-  -moz-animation-delay: 2.5s;
-  -o-animation-delay: 2.5s;
-  animation-delay: 2.5s;
+  -webkit-animation-delay: 1.5s;
+  -moz-animation-delay: 1.5s;
+  -o-animation-delay: 1.5s;
+  animation-delay: 1.5s;
   animation-fill-mode: forwards;
 }
 
 #head3 {
-  -webkit-animation: fadeIn 5s ease-in;
-  -moz-animation: fadeIn 5s ease-in;
-  -o-animation: fadeIn 5s ease-in;
-  animation: fadeIn 5s ease-in;
-  -webkit-animation-delay: 12s;
-  -moz-animation-delay: 12s;
-  -o-animation-delay: 12s;
-  animation-delay: 12s;
+  -webkit-animation: fadeIn 1s ease-in;
+  -moz-animation: fadeIn 1s ease-in;
+  -o-animation: fadeIn 1s ease-in;
+  animation: fadeIn 1s ease-in;
+  -webkit-animation-delay: 1.7s;
+  -moz-animation-delay: 1.7s;
+  -o-animation-delay: 1.7s;
+  animation-delay: 1.7s;
   animation-fill-mode: forwards;
 }
 /* 

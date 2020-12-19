@@ -10,7 +10,7 @@ const joinRoom = async() =>{
     video:false
   });
   sessionStorage.setItem('room', room)
-  setTimer(endRoom, 120000)
+  setTimer(endRoom, 1200000)
   room.participants.forEach(participantConnected);
   room.on('participantConnected', participantConnected);
 
@@ -42,6 +42,11 @@ const setTimer = async(fn, time) => {
 
 get_room_and_tracks = joinRoom()
 
+// let transitionLocalMediaContainer =(localMediaContainer)=>{ new Promise((resolve, reject)=>{
+//   localMediaContainer.addEventListener("transitionend")
+//   resolve(localMediaContainer)
+//   })
+// }
 const toggleLocalTrack = async(track_kind) =>{
   console.log('running toggle')
   const toggler = document.getElementById(`toggler_${track_kind}`);
@@ -49,29 +54,35 @@ const toggleLocalTrack = async(track_kind) =>{
   const localMediaContainer = document.getElementById('local_media') || container.appendChild(document.createElement('div'));
   localMediaContainer.setAttribute('id', 'local_media')
 
-  get_room_and_tracks.then( roomAndTracks =>{
-    let room = roomAndTracks[0]
-    let tracks = roomAndTracks[1]
+  roomAndTracks = await get_room_and_tracks
+  let room = roomAndTracks[0]
+  let tracks = roomAndTracks[1]
 
     // For DEBUG
-    window.room = room
-    window.tracks = tracks
+  window.room = room
+  window.tracks = tracks
 
-    const localTrack = tracks.find(track => track.kind === track_kind)
+  const localTrack = tracks.find(track => track.kind === track_kind)
 
-    if (toggler.checked === true){
-      localTrack.enable()
-      room.localParticipant.publishTrack(localTrack)
-      localMediaContainer.appendChild(localTrack.attach())
-    }
-    else if (toggler.checked !== true){
-      localTrack.disable()
-      let mediaElements = localTrack.detach();
-      mediaElements.forEach(mediaElement => mediaElement.remove());
-      room.localParticipant.unpublishTrack(localTrack)
-      localTrack.detach(localMediaContainer).remove()
-    }
-  })
+  if (toggler.checked === true){
+    localTrack.enable()
+    room.localParticipant.publishTrack(localTrack)
+    localMediaContainer.appendChild(localTrack.attach())
+  }
+  else if (toggler.checked !== true){
+    localMediaContainer.classList.add('removed')
+    localMediaContainer.addEventListener("transitionend", ()=>{
+      localMediaContainer.remove()
+    })
+    await sleep(2000)
+
+    localTrack.disable()
+    let mediaElements = localTrack.detach();
+    mediaElements.forEach(mediaElement => mediaElement.remove());
+    room.localParticipant.unpublishTrack(localTrack)
+    localTrack.detach(localMediaContainer).remove()
+  }
+
 }
 
 const leaveRoom = async() => {

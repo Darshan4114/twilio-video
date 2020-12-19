@@ -1,5 +1,14 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 body {
   background-color: aliceblue;
+  max-width: 100vw;
+  height: 100vh;
+  /* overflow: hidden; */
+  /* background-image: url(../img/mic.svg); */
 }
 
 div#local_media video {
@@ -8,14 +17,67 @@ div#local_media video {
   z-index: 5;
 }
 
-#local_media {
-  width: 25%;
-  height: 25%;
-  border: 0.5rem double gray;
+input[type="checkbox"] {
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+}
+#toggler_video::before {
+  background-image: url(../img/video.svg);
+  border-radius: 0.45em 0 0 0.45em;
+}
+#toggler_audio::before {
+  background-image: url(../img/mic.svg);
+  border-radius: 0 0.45em 0.45em 0;
+}
+input[type="checkbox"]:checked::before {
+  opacity: 1;
+  background-color: rgb(5, 255, 46);
+}
+
+.buttons {
   position: absolute;
+  display: flex;
+  width: 7rem;
+  left: calc(50vw - 3rem);
+  bottom: 2rem;
+  border-radius: 0.5em;
+  justify-content: space-around;
+}
+input[type="checkbox"]::before {
+  transition: 0.3s ease-out;
+  position: absolute;
+  padding: 0.3em;
+  content: "";
   right: 0;
-  bottom: 0;
-  margin: 1rem;
+  top: 0;
+  height: 3rem;
+  width: 3rem;
+  background-repeat: no-repeat;
+  background-size: 2em;
+  background-position: center;
+  opacity: 0.8;
+  background-color: rgb(46, 46, 46);
+  transition: 0.3s ease-out;
+}
+#local_media video {
+  max-width: 20vw;
+  transition: all 1s;
+}
+#local_media {
+  border-radius: 0.35em;
+  transition: all 1s;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.979);
+  max-width: 20%;
+  animation: fadeIn 0.75s ease-out;
+  animation-fill-mode: forwards;
+  height: 20%;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
   overflow: hidden;
   z-index: 5;
 }
@@ -36,38 +98,12 @@ div#local_media video {
   position: absolute;
   left: 0;
 }
-
-#switch-video {
-  z-index: 5;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 30%;
-}
-#switch-audio {
-  z-index: 5;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 40%;
-}
-#disconnect {
-  z-index: 5;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 40%;
-}
 #end_room {
   z-index: 5;
   position: absolute;
   bottom: 0.5rem;
   right: 50%;
 }
-.switch-label {
-  z-index: 5;
-  position: absolute;
-  bottom: 0.5rem;
-  left: 1rem;
-}
-
 .waiting {
   z-index: -1;
   position: absolute;
@@ -80,4 +116,18 @@ div#local_media video {
 .notifications {
   margin: 2rem;
   color: green;
+}
+
+.removed {
+  height: 0 !important;
+  transition: 3s ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

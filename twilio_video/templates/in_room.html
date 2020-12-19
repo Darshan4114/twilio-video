@@ -1,13 +1,14 @@
-
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="{% static 'css/switch.css' %}">
     <link rel="stylesheet" href="{% static 'css/in_room.css' %}">
+    <link rel="stylesheet" href="../static/css/in_room.css">
 
     <!-- <link rel="stylesheet" href="{% static 'room.css' %}"> -->
     <title>Twilio Video Room</title>
@@ -16,37 +17,25 @@
 <body>
 
     <div class="container-fluid master" id="container">
-
-        <!-- Toggle local video -->
-        
-
-        <!-- <p>Name: {{context.person_name}}</p>
-        <p>Participants : {{context.participantsList}}</p>
-        <p>Room: {{context.room_name}}</p> -->
-
-
         <div class="remote_div"></div>
         <div class="waiting">
-            <h1 class="waiting" > Room Empty.... {{room_name}}      Please wait...</h1>
-            <p>{{context.participantsList}}</p>
+            <h1 class="waiting" > Room Empty.... Please wait...</h1>
+           
         </div>
                
         
         
-        <div class="local-group">
+        <div class="buttons">
 
-            <a href="{% url 'video_app:HomeView' %}" id="disconnect" onclick="leaveRoom()">Disconnect</a>            
-            <button id="end_room" onclick="endRoom()">End Room</button>            
-            <label id="switch-video" class="switch" value="Connect">
+            <!-- <a href="{% url 'video_app:HomeView' %}" id="disconnect" onclick="leaveRoom()">Disconnect</a>             -->
+            <!-- <button id="end_room" onclick="endRoom()">End Room</button>             -->
+            
                 <input type="checkbox" onclick="toggleLocalTrack('video')" value="1" id="toggler_video">
-                <span class="slider round"></span>
-            </label>
-            <h4 class="switch-label">Local Video : </h4>
-            <label id="switch-audio" class="switch" value="Connect">
+
+            <!-- <h4 class="switch-label">Local Video : </h4> -->
                 <input type="checkbox" onclick="toggleLocalTrack('audio')" value="1" id="toggler_audio">
-                <span class="slider round"></span>
-            </label>
-            <h4 class="switch-label">Local Audio : </h4>
+               
+            <!-- <h4 class="switch-label">Local Audio : </h4> -->
 
             <!-- <div id="local_media"></div> -->
         </div>

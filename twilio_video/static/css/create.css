@@ -1,21 +1,55 @@
-body{
-    background-color: aliceblue;
-    color: #555;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: roboto, sans-serif;
+  background-color: aliceblue;
+  color: #555;
+}
+.container {
+  margin: auto auto;
+  padding: 2em;
+  width: 25rem;
+  height: 15rem;
+  text-align: center;
 }
 
-.container-fluid{
-    position: absolute;
-    top:3rem;
-    bottom:3rem;
- }
-
-
-input{
-    width:100%;
-    margin-bottom: 1.5rem;
+h2 {
+  margin-bottom: 1em;
 }
-h1 {
-    font-size: 3rem;
-    margin-bottom: 1.65rem;
 
+input {
+  margin-bottom: 0.5em;
+  flex: 1;
+  padding: 0.5em;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 1em;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgb(105, 105, 105);
+}
+
+input:focus {
+  outline-style: none;
+  box-shadow: 0 0 3pt 2pt rgb(5, 235, 243);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+}
+
+#submit {
+  padding: 0.5em;
+  background-color: rgb(13, 201, 13);
+  color: white;
+  border: 1px solid rgb(13, 201, 13);
+  border-radius: 0.2em;
+}
+#submit:hover {
+  background-color: white;
+  color: rgb(13, 201, 13);
+  cursor: pointer;
 }

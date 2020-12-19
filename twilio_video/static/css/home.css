@@ -26,18 +26,31 @@ body {
 }
 
 .container {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-template-areas:
     "headings"
+    "qr"
+    "warning"
     "create_room";
-  grid-template-rows: 85% 15%;
+  grid-template-rows: minmax(13rem, 25%) minmax(200px, 25%) 5% 45%;
   height: 100vh;
+}
+.headings,
+#qr_container,
+#warning,
+button {
+  flex: 1;
 }
 
 .headings {
   grid-area: headings;
   position: relative;
-  padding: 2rem;
+  /* padding: 2rem; */
+}
+#qr_container {
+  grid-area: qr;
+  text-align: center;
 }
 
 .headings h1 {
@@ -47,4 +60,7 @@ body {
   color: #eee;
   margin: 2rem auto;
   width: 90%;
+}
+#warning {
+  grid-area: warning;
 }
