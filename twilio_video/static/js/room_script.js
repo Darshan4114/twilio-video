@@ -2,6 +2,7 @@ const Video = Twilio.Video
 
 const joinRoom = async() =>{
   const tracks = await Video.createLocalTracks();
+
   console.log('yeah, joinRoom')
   sessionStorage.setItem('tracks', tracks)
   const room = await Video.connect(context.person_token, {
@@ -9,6 +10,7 @@ const joinRoom = async() =>{
     audio:false,
     video:false
   });
+  activateTogglers()
   sessionStorage.setItem('room', room)
   setTimer(endRoom, 1200000)
   room.participants.forEach(participantConnected);
@@ -40,19 +42,21 @@ const setTimer = async(fn, time) => {
 
 }
 
+const activateTogglers =()=>{
+  const toggler_audio = document.getElementById(`toggler_audio`);
+  const toggler_video = document.getElementById(`toggler_video`);
+  toggler_audio.disabled = false;
+  toggler_video.disabled = false;
+}
+
 get_room_and_tracks = joinRoom()
 
-// let transitionLocalMediaContainer =(localMediaContainer)=>{ new Promise((resolve, reject)=>{
-//   localMediaContainer.addEventListener("transitionend")
-//   resolve(localMediaContainer)
-//   })
-// }
+
 const toggleLocalTrack = async(track_kind) =>{
   console.log('running toggle')
   const toggler = document.getElementById(`toggler_${track_kind}`);
   const container = document.querySelector('#container');
-  const localMediaContainer = document.getElementById('local_media') || container.appendChild(document.createElement('div'));
-  localMediaContainer.setAttribute('id', 'local_media')
+  const localMediaContainer = document.getElementById('local_media')
 
   roomAndTracks = await get_room_and_tracks
   let room = roomAndTracks[0]
@@ -69,20 +73,27 @@ const toggleLocalTrack = async(track_kind) =>{
     room.localParticipant.publishTrack(localTrack)
     localMediaContainer.appendChild(localTrack.attach())
   }
-  else if (toggler.checked !== true){
-    localMediaContainer.classList.add('removed')
-    localMediaContainer.addEventListener("transitionend", ()=>{
-      localMediaContainer.remove()
-    })
-    await sleep(2000)
-
+  else if (toggler.checked !== true){    
+    if(localTrack.kind == "video"){
+      video_elem = await removeVideoAsync(localMediaContainer)
+    }
     localTrack.disable()
     let mediaElements = localTrack.detach();
     mediaElements.forEach(mediaElement => mediaElement.remove());
     room.localParticipant.unpublishTrack(localTrack)
-    localTrack.detach(localMediaContainer).remove()
-  }
+}
+}
 
+
+const removeVideoAsync =async(localMediaContainer)=>{
+  return new Promise((resolve,reject)=>{
+    let video_elem =  Array.from(localMediaContainer.children).find(elem=> elem.tagName=="VIDEO")
+    video_elem.addEventListener("transitionend", ()=>{
+      video_elem.remove()
+      resolve(video_elem)
+    })
+    video_elem.style.width = "0"
+  })
 }
 
 const leaveRoom = async() => {

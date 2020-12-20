@@ -30,16 +30,15 @@
             <!-- <a href="{% url 'video_app:HomeView' %}" id="disconnect" onclick="leaveRoom()">Disconnect</a>             -->
             <!-- <button id="end_room" onclick="endRoom()">End Room</button>             -->
             
-                <input type="checkbox" onclick="toggleLocalTrack('video')" value="1" id="toggler_video">
+                <input type="checkbox" disabled onclick="toggleLocalTrack('video')" value="1" id="toggler_video">
 
             <!-- <h4 class="switch-label">Local Video : </h4> -->
-                <input type="checkbox" onclick="toggleLocalTrack('audio')" value="1" id="toggler_audio">
+                <input type="checkbox" disabled onclick="toggleLocalTrack('audio')" value="1" id="toggler_audio">
                
             <!-- <h4 class="switch-label">Local Audio : </h4> -->
 
-            <!-- <div id="local_media"></div> -->
         </div>
-        
+        <div id="local_media"></div>      
         
     </div>
          
