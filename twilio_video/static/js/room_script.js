@@ -24,10 +24,11 @@ const joinRoom = async() =>{
 }
 
 const setTimer = async(fn, time) => {
+  timer_div = document.querySelector('#timer_div')
   let date = new Date()
   timer = document.createElement('p')
   timer.setAttribute('id','timer')
-  document.body.appendChild(timer)
+  timer_div.appendChild(timer)
   let current_time = date.getTime()
   time_passed = current_time - sessionStorage.getItem('room_start_time')
   time_left = Math.floor((time-time_passed)/1000)
@@ -65,7 +66,7 @@ const toggleLocalTrack = async(track_kind) =>{
     // For DEBUG
   window.room = room
   window.tracks = tracks
-
+ 
   const localTrack = tracks.find(track => track.kind === track_kind)
 
   if (toggler.checked === true){
@@ -170,7 +171,7 @@ const endRoom = async() =>{
   let roomAndTracks = await get_room_and_tracks
   let room = roomAndTracks[0]
   room_sid = room.sid
-  room.participants.forEach(disconnect)
+  room.participants.forEach(leaveRoom)
   room = await fetch(`/end_room/${room_sid}`)
   room_data = await room.json()
   console.log('room_end, roomdata = ',room_data)

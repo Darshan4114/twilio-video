@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
@@ -17,6 +17,7 @@
 <body>
 
     <div class="container-fluid master" id="container">
+        <div id="timer_div"></div>
         <div class="remote_div"></div>
         <div class="waiting">
             <h1 class="waiting" > Room Empty.... Please wait...</h1>
@@ -28,7 +29,7 @@
         <div class="buttons">
 
             <!-- <a href="{% url 'video_app:HomeView' %}" id="disconnect" onclick="leaveRoom()">Disconnect</a>             -->
-            <!-- <button id="end_room" onclick="endRoom()">End Room</button>             -->
+            <button id="end_room" onclick="endRoom()">End Room</button>            
             
                 <input type="checkbox" disabled onclick="toggleLocalTrack('video')" value="1" id="toggler_video">
 

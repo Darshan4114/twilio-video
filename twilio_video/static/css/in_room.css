@@ -11,6 +11,37 @@ body {
   /* background-image: url(../img/mic.svg); */
 }
 
+#timer_div {
+  position: relative;
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: center;
+}
+#timer {
+  position: absolute;
+  left: calc(50vw - 2.5rem);
+  top: 1rem;
+  background-color: #333;
+  color: white;
+  padding: 0.5em;
+  margin-left: 2em;
+  border-radius: 0.25em;
+  margin: 0 auto;
+  width: 7rem;
+  text-align: center;
+}
+#timer::before {
+  content: "";
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 0.25rem);
+  left: 0.5em;
+  background-color: red;
+  margin: auto auto;
+}
+
 div#local_media video {
   /* height: 100%; */
   transform: scale(-1, 1);
@@ -24,6 +55,24 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   outline: none;
+}
+#toggler_video {
+  grid-area: video;
+}
+#toggler_audio {
+  grid-area: audio;
+}
+#end_room {
+  grid-area: end;
+  width: 6rem;
+  background-color: red;
+  opacity: 0.8;
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 0.25em;
+  border: none;
+  max-width: 100%;
+  max-height: 100%;
 }
 #toggler_video::before {
   background-image: url(../img/video.svg);
@@ -40,7 +89,13 @@ input[type="checkbox"]:checked::before {
 
 .buttons {
   position: absolute;
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr 3rem;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 1rem;
+  grid-template-areas:
+    "video audio"
+    "end end";
   width: 7rem;
   left: calc(50vw - 3rem);
   bottom: 2rem;
@@ -104,12 +159,12 @@ input[type="checkbox"]::before {
   position: absolute;
   left: 0;
 }
-#end_room {
+/* #end_room {
   z-index: 5;
   position: absolute;
   bottom: 0.5rem;
   right: 50%;
-}
+} */
 .waiting {
   z-index: -1;
   position: absolute;
