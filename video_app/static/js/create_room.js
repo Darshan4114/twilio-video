@@ -45,7 +45,6 @@ const create_room = async() =>{
     await sleep(endRoom,room_data_json.room_sid)
 }
 
-create_room().catch(err=> console.log(err))
 
 const endRoom = async(room_sid) =>{
     // room.participants.forEach(disconnect)
