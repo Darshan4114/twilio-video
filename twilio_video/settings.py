@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
 import environ
 env = environ.Env(
     # set casting, default value
@@ -36,7 +37,8 @@ SECRET_KEY = '(f(xkfxgvr=7e=hl8k0n^@qce^-4p@5d-f$i6i8-rxad5-)im0'
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.3', '0.0.0.0', 'darshandev.com', 'https://www.darshandev.com', 'http://www.darshandev.com']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.3', '0.0.0.0', 'darshandev.com',
+                 'https://www.darshandev.com', 'http://www.darshandev.com']
 
 
 # Application definition
@@ -147,3 +149,5 @@ INTERNAL_IPS = [
 TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
 TWILIO_API_KEY_SID = env("TWILIO_API_KEY_SID")
 TWILIO_API_KEY_SECRET = env("TWILIO_API_KEY_SECRET")
+
+django_heroku.settings(locals())

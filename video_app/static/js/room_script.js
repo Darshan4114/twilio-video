@@ -123,8 +123,6 @@ const disconnected = (room, error)=>{
 
 function participantConnected(participant) {
   console.log('Participant "%s" connected', participant.identity);
-  alert('Participant "%s" connected', participant.identity);
-
   const div = document.getElementsByClassName('remote_div')[0]
   window.existing_remote_div = div
 
