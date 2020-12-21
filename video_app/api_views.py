@@ -27,6 +27,7 @@ def create_room(request):
         "room_name": room_name,
         "room_sid": room_sid
     }
+    print('room_data', room_data)
     return JsonResponse(room_data)
 
 
