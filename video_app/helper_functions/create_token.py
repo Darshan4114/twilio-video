@@ -1,10 +1,11 @@
+from django.conf import settings
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant
 
-account_sid = 'AC9e157590d76a6ce9aff6350ba3b4bfd3'
+twilio_account_sid = settings.TWILIO_ACCOUNT_SID
 
-api_key_sid = "SK324fef26fbac3947eb905edbd31e50fa"
-api_key_secret = "AEsTZcKySZFnPuCgijsey7yb3zBNPzMp"
+twilio_api_key_sid = settings.TWILIO_API_KEY_SID
+twilio_api_key_secret = settings.TWILIO_API_KEY_SECRET
 
 
 def create_token(person_name, room_name):
@@ -15,8 +16,8 @@ def create_token(person_name, room_name):
     identity = person_name
 
     # Create Access Token with credentials
-    token = AccessToken(account_sid, api_key_sid,
-                        api_key_secret, identity=identity)
+    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+                        twilio_api_key_secret, identity=identity)
 
     # Create a Video grant and add to token
     video_grant = VideoGrant(room=room_name)
