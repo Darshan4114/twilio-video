@@ -12,7 +12,7 @@ const joinRoom = async() =>{
   });
   activateTogglers()
   sessionStorage.setItem('room', room)
-  setTimer(endRoom, 1200000)
+  setTimer(endRoom, 120000)
   room.participants.forEach(participantConnected);
   room.on('participantConnected', participantConnected);
 

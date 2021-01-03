@@ -13,7 +13,7 @@ client = Client(twilio_api_key_sid, twilio_api_key_secret)
 def create_room(request):
     room_name = create_room_name()
     # Creating twilio room
-    twilio_room = client.video.rooms.create(unique_name=room_name)
+    twilio_room = client.video.rooms.create(unique_name=room_name, type="go")
 
     # Setting variables(name & sid) for newly created room
     # NEW_ROOM_SID
